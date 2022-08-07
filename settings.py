@@ -1,11 +1,11 @@
 """ 
     File to hold all of the
-     220805 v1 Snake Game's 
+         Snake Game's 
        GLOBAL CONSTANTS
 """
 from os import path
 
-# Name of the folder with all of the sprite, graphic, annd sound files
+# Name of the folder with all of the sprites, graphics, annd sound files
 RESOURCE_FOLDER = "resources"
 
 
@@ -17,7 +17,7 @@ def get_file_path_name(file_name:str) -> str:
 
 
 # ----- Window Title -------
-TITLE = "Snake"
+TITLE = "Snake!"
 
 # ---- Game Grid Dimensions ------
 CELL_SIZE   = 40
@@ -38,6 +38,7 @@ HS_FILE = "high_score.txt"
 # Graphic file paths (sprite pngs, sound effects, splash screens)
 BG_IMAGE_PATH    = get_file_path_name("background_grid_680x600.png")
 FOOD_IMAGE_PATH  = get_file_path_name("food_green_40x40.png")
+ICON_IMAGE_PATH  = get_file_path_name("snake_icon.png")
 
 # ----- Snake Head Images --------
 HEAD_DOWN  = get_file_path_name("head_down.png")
@@ -57,10 +58,10 @@ BODY_HORIZONTAL = get_file_path_name("body_horizontal.png")
 BODY_VERTICAL   = get_file_path_name("body_vertical.png")
 
 # ------ Snake Turning Body Image ------ 
-TURN_DOWN_LEFT  = get_file_path_name("turn_down_left.png")
-TURN_DOWN_RIGHT = get_file_path_name("turn_down_right.png")
-TURN_UP_LEFT    = get_file_path_name("turn_up_left.png")
-TURN_UP_RIGHT   = get_file_path_name("turn_up_right.png")
+TURN_DOWN_LEFT  = get_file_path_name("turn_dl.png")
+TURN_DOWN_RIGHT = get_file_path_name("turn_dr.png")
+TURN_UP_LEFT    = get_file_path_name("turn_ul.png")
+TURN_UP_RIGHT   = get_file_path_name("turn_ur.png")
 
 # ----- Sound Effects
 HIT_SELF_SOUND = get_file_path_name("hit_self.wav")

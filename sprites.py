@@ -48,20 +48,29 @@ class Snake:
 
     def change_direction(self, key_pressed):
         """ Takes a keyboard input and updates the snakes direction acordingly. """
+        prev_x, prev_y  = self.cells[1]
+        cur_dx = prev_x - self.cells[0][0]
+        cur_dy = prev_y - self.cells[0][1]
+        
+        if cur_dx == (GRID_WIDTH-1): cur_dx = -1
+        if cur_dy == (GRID_HEIGHT-1): cur_dy = -1
+        if cur_dx == -(GRID_WIDTH-1): cur_dx = 1
+        if cur_dy == -(GRID_HEIGHT-1): cur_dy = 1
+        
         # Move Up - W or Up arrow key
-        if (key_pressed == pg.K_UP or key_pressed == pg.K_w) and self.dy != 1:
+        if (key_pressed == pg.K_UP or key_pressed == pg.K_w) and cur_dy != -1:
             self.dx = 0
             self.dy = -1
         # Move Down - S or Down arrow key
-        if (key_pressed == pg.K_DOWN or key_pressed == pg.K_s) and self.dy != -1:
+        if (key_pressed == pg.K_DOWN or key_pressed == pg.K_s) and cur_dy != 1:
             self.dx = 0
             self.dy = 1
         # Move Left - A or Left arrow key
-        if (key_pressed == pg.K_LEFT or key_pressed == pg.K_a) and self.dx != 1:
+        if (key_pressed == pg.K_LEFT or key_pressed == pg.K_a) and cur_dx != -1:
             self.dx = -1
             self.dy = 0
         # Move Right - D or Right arrow key
-        if (key_pressed == pg.K_RIGHT or key_pressed == pg.K_d) and self.dx != -1:
+        if (key_pressed == pg.K_RIGHT or key_pressed == pg.K_d) and cur_dx != 1:
             self.dx = 1
             self.dy = 0
 

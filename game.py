@@ -21,6 +21,10 @@ class Game:
         pg.display.set_caption(TITLE)
         pg.mixer.init()
         
+        # Set the window icon
+        self.window_icon = pg.image.load(ICON_IMAGE_PATH)
+        pg.display.set_icon(self.window_icon)
+        
         # Load Sound Resources
         self.hit_self_sound = pg.mixer.Sound(HIT_SELF_SOUND)
         self.hit_food_sound = pg.mixer.Sound(HIT_FOOD_SOUND)

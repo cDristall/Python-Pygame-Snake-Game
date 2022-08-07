@@ -1,24 +1,15 @@
-import pygame
+import pygame as pg
 import sys, os
+# --- Snake & Food Classes
 from sprites import *
-#--- Global constants ---
+#---- Global constants ---
 from settings import *
+
 
 """
 TODO:
 = Game:
 - Make Like The Google Snake Game
-- Load Audio files for sound effects
-- Load a PNG of checkerboard pattern for the background image
-- 
-- Fix file loading so it gets the right file path name
-- Might be able to do this inside the settings.py file
--
-= Sprites:
-- Load an image for each of the snakes body parts
-- Start simple and have just a 40x40 block image
-- 
-- Load an image for the food
 -
 """
 
@@ -26,23 +17,25 @@ TODO:
 class Game:
     def __init__(self):
         # Initiliaze pygame & set the window title
-        pygame.init()
-        pygame.display.set_caption(TITLE)
-        pygame.mixer.init()
+        pg.init()
+        pg.display.set_caption(TITLE)
+        pg.mixer.init()
         
         # Load Sound Resources
-        self.hit_self_sound = pygame.mixer.Sound(HIT_SELF_SOUND)
-        self.hit_food_sound = pygame.mixer.Sound(HIT_FOOD_SOUND)
+        self.hit_self_sound = pg.mixer.Sound(HIT_SELF_SOUND)
+        self.hit_food_sound = pg.mixer.Sound(HIT_FOOD_SOUND)
+        self.hit_food_sound.set_volume(0.1)
+        self.hit_self_sound.set_volume(0.25)
         
         # Create the window surface object
-        self.screen = pygame.display.set_mode(SCREEN_SIZE)
-        self.background_image = pygame.image.load(BG_IMAGE_PATH).convert()
+        self.screen = pg.display.set_mode(SCREEN_SIZE)
+        self.background_image = pg.image.load(BG_IMAGE_PATH).convert()
         
         # Create our objects & set the beginning of game data
         self.running = True
         self.load_high_score()
-        self.clock = pygame.time.Clock()
-        self.font_name = pygame.font.match_font(FONT_NAME)
+        self.clock = pg.time.Clock()
+        self.font_name = pg.font.match_font(FONT_NAME)
         
     def load_high_score(self):
         """ Gets the current High Score from high_score.tx or sets the High Score to 0. """
@@ -109,19 +102,15 @@ class Game:
     
     def process_events(self):
         """ Process all of the events. Return a "True" if we need to close the window. """
-        for event in pygame.event.get():
+        for event in pg.event.get():
             # Checks if player has exited out of window
-            if event.type == pygame.QUIT:
+            if event.type == pg.QUIT:
                 if self.playing:
                     self.playing = False
                 self.running = False
 
             # Checks if the player has hit any keys
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    print(self.snake.cells)
-                    print(self.snake.cell_dir)
-                    self.wait_for_key() 
+            elif event.type == pg.KEYDOWN: 
                 # Update the Snake's Direction based off user's key inputs
                 self.snake.change_direction(event.key)
     
@@ -138,13 +127,15 @@ class Game:
             self.hit_food_sound.play()
             self.food.respawn(self.snake.cells)
             self.snake.maxCells += 1
-            self.score += 1
-        
+            self.score += 10
+                
         # Check if Snake has collided with itself
-        if self.snake.cells.count(self.snake.cells[0]) > 1:
-                #print("Snake has hit itself.")
+        for block in self.snake.cells[1:]:
+            if block == self.snake.cells[0]:
                 self.hit_self_sound.play()
+                pg.time.delay(250)
                 self.playing = False
+                
     
     
     def display_frame(self):
@@ -153,7 +144,7 @@ class Game:
         self.screen.blit(self.background_image, (0, 0))
         self.snake.draw()
         self.food.draw()
-        pygame.display.update()
+        pg.display.update()
     
     
     def wait_for_key(self):
@@ -161,13 +152,13 @@ class Game:
         waiting = True
         while waiting:
             self.clock.tick(FPS_SPEED)
-            for event in pygame.event.get():
+            for event in pg.event.get():
                 # Checks if player has exited out of window
-                if event.type == pygame.QUIT:
+                if event.type == pg.QUIT:
                     waiting = False
                     self.running = False
                 # Checks if player hit a key | exits the current screen
-                if event.type == pygame.KEYDOWN:
+                if event.type == pg.KEYDOWN:
                     waiting = False
     
     
@@ -178,7 +169,7 @@ class Game:
         self.draw_text(TITLE, 48, WHITE, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4)
         self.draw_text("Arrows or WASD to move", 22, WHITE, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
         self.draw_text("Press any key to play", 22, WHITE, SCREEN_WIDTH / 2, SCREEN_HEIGHT * 3 / 4)
-        pygame.display.update()
+        pg.display.update()
         self.wait_for_key()
     
     
@@ -195,13 +186,13 @@ class Game:
         self.draw_text("GAME OVER", 48, WHITE, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4)
         self.draw_text("Score: " + str(self.score), 22, WHITE, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
         self.draw_text("Press any key to play again", 22, WHITE, SCREEN_WIDTH / 2, SCREEN_HEIGHT * 3 / 4)
-        pygame.display.update()
+        pg.display.update()
         self.wait_for_key()
      
     
     def draw_text(self, text, size, color, x, y):
         """ Draws any text to the screen. """
-        font = pygame.font.Font(self.font_name, size)
+        font = pg.font.Font(self.font_name, size)
         text_surface = font.render(text, True, color)
         text_rect = text_surface.get_rect()
         text_rect.midtop = (x, y)
@@ -222,6 +213,6 @@ if __name__ == '__main__':
         game.show_go_screen()
 
     # End Pygame
-    pygame.quit()
+    pg.quit()
     # Exist Script
     sys.exit()
